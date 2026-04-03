@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rohitxaii — Design Services</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #E8A020;
+    --gold-light: #F5C55A;
+    --dark: #0D0D0D;
+    --dark2: #141414;
+    --dark3: #1C1C1C;
+    --cream: #F0EBE0;
+    --muted: #777;
+    --muted2: #555;
+    --white: #fff;
+    --font: 'Outfit', sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--dark); color: var(--white); font-family: var(--font); font-weight: 300; line-height: 1.6; overflow-x: hidden; }
+  body::before { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E"); pointer-events: none; z-index: 0; opacity: 0.5; }
+
+  .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 80px 24px 60px; position: relative; overflow: hidden; }
+  .hero::after { content: ''; position: absolute; width: 700px; height: 700px; background: radial-gradient(circle, rgba(232,160,32,0.10) 0%, transparent 65%); top: 50%; left: 50%; transform: translate(-50%, -50%); pointer-events: none; }
+  .hero-tag { font-size: 11px; letter-spacing: 0.28em; text-transform: uppercase; color: var(--gold); margin-bottom: 28px; opacity: 0; animation: fadeUp 0.8s 0.2s forwards; font-weight: 500; }
+  .hero h1 { font-size: clamp(52px, 10vw, 92px); font-weight: 700; line-height: 1.0; letter-spacing: -0.03em; margin-bottom: 10px; opacity: 0; animation: fadeUp 0.8s 0.4s forwards; }
+  .hero h1 em { font-style: normal; color: var(--gold); }
+  .hero-sub { font-size: 14px; color: var(--muted); margin-bottom: 48px; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0; animation: fadeUp 0.8s 0.6s forwards; font-weight: 400; }
+  .contact-strip { display: flex; gap: 32px; flex-wrap: wrap; justify-content: center; opacity: 0; animation: fadeUp 0.8s 0.8s forwards; }
+  .contact-item { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--muted); }
+  .contact-item span.dot { width: 5px; height: 5px; background: var(--gold); border-radius: 50%; flex-shrink: 0; }
+  .contact-item a { color: var(--cream); text-decoration: none; font-weight: 400; transition: color 0.2s; }
+  .contact-item a:hover { color: var(--gold); }
+  .scroll-hint { position: absolute; bottom: 36px; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 6px; opacity: 0; animation: fadeUp 0.8s 1.2s forwards; }
+  .scroll-hint span { font-size: 10px; letter-spacing: 0.22em; color: var(--muted); text-transform: uppercase; }
+  .scroll-line { width: 1px; height: 38px; background: linear-gradient(to bottom, var(--gold), transparent); animation: scrollPulse 2s ease-in-out infinite; }
+
+  .section-divider { text-align: center; padding: 28px 0 52px; position: relative; }
+  .section-divider::before { content: ''; position: absolute; top: 50%; left: 10%; right: 10%; height: 0.5px; background: linear-gradient(to right, transparent, rgba(232,160,32,0.25), transparent); }
+  .section-divider span { background: var(--dark); padding: 0 20px; font-size: 10px; letter-spacing: 0.32em; text-transform: uppercase; color: var(--gold); position: relative; font-weight: 500; }
+
+  .packages { padding: 0 24px 40px; max-width: 1200px; margin: 0 auto; }
+  .packages-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 2px; }
+  .pkg { background: var(--dark2); padding: 36px 28px; position: relative; overflow: hidden; transition: transform 0.3s ease; }
+  .pkg:hover { transform: translateY(-4px); }
+  .pkg::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--dark3); transition: background 0.3s; }
+  .pkg:hover::before { background: var(--gold); }
+  .pkg.featured { background: var(--dark3); border: 1px solid rgba(232,160,32,0.2); }
+  .pkg.featured::before { background: var(--gold); }
+  .popular-badge { display: inline-block; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--dark); background: var(--gold); padding: 4px 12px; border-radius: 20px; margin-bottom: 18px; font-weight: 600; }
+  .pkg-icon { font-size: 22px; margin-bottom: 14px; display: block; }
+  .pkg-name { font-size: 26px; font-weight: 600; margin-bottom: 4px; color: var(--white); letter-spacing: -0.02em; }
+  .pkg-tagline { font-size: 12px; color: var(--muted); margin-bottom: 20px; }
+  .pkg-price { margin-bottom: 6px; }
+  .price-row { display: flex; align-items: baseline; gap: 5px; flex-wrap: wrap; margin-bottom: 4px; }
+  .price-start { font-size: 12px; color: var(--muted); }
+  .price-currency { font-size: 18px; font-weight: 600; color: var(--gold-light); line-height: 1; }
+  .price-amount { font-size: 38px; font-weight: 700; color: var(--gold); line-height: 1; letter-spacing: -0.02em; }
+  .price-old { font-size: 15px; color: var(--muted2); text-decoration: line-through; font-weight: 400; }
+  .price-suffix { font-size: 11px; color: var(--muted); display: block; margin-bottom: 12px; }
+  .pkg-disclaimer { font-size: 11px; color: var(--muted2); font-style: italic; margin-bottom: 20px; line-height: 1.55; padding: 10px 12px; border-left: 2px solid rgba(232,160,32,0.25); }
+  .pkg-includes { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; font-weight: 500; }
+  .pkg-features { list-style: none; margin-bottom: 28px; }
+  .pkg-features li { font-size: 13px; color: #bbb; padding: 8px 0; border-bottom: 0.5px solid rgba(255,255,255,0.05); display: flex; align-items: flex-start; gap: 10px; line-height: 1.45; }
+  .pkg-features li::before { content: ''; width: 4px; height: 4px; background: var(--gold); border-radius: 50%; flex-shrink: 0; margin-top: 7px; }
+  .pkg-cta { display: block; width: 100%; padding: 13px 24px; text-align: center; font-size: 11.5px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; text-decoration: none; border: 1px solid rgba(232,160,32,0.35); color: var(--gold); background: transparent; transition: all 0.25s ease; cursor: pointer; font-family: var(--font); }
+  .pkg-cta:hover { background: var(--gold); color: var(--dark); border-color: var(--gold); }
+  .pkg.featured .pkg-cta { background: var(--gold); color: var(--dark); border-color: var(--gold); }
+  .pkg.featured .pkg-cta:hover { background: var(--gold-light); }
+
+  .addons { max-width: 1100px; margin: 0 auto; padding: 0 24px 100px; }
+  .addons-title { font-size: 32px; font-weight: 600; margin-bottom: 6px; text-align: center; letter-spacing: -0.02em; }
+  .addons-sub { text-align: center; color: var(--muted); font-size: 13.5px; margin-bottom: 32px; }
+  .addon-tabs { display: flex; gap: 2px; margin-bottom: 2px; flex-wrap: wrap; }
+  .addon-tab { flex: 1; min-width: 120px; padding: 14px 12px; text-align: center; font-size: 11.5px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; background: var(--dark2); color: var(--muted); cursor: pointer; transition: all 0.2s; border: none; font-family: var(--font); border-bottom: 2px solid transparent; }
+  .addon-tab:hover { color: #ccc; background: var(--dark3); }
+  .addon-tab.active { color: var(--gold); background: var(--dark3); border-bottom-color: var(--gold); }
+  .addon-panel { display: none; background: var(--dark2); }
+  .addon-panel.active { display: block; }
+  .addon-table { width: 100%; border-collapse: collapse; }
+  .addon-table thead tr { background: var(--dark3); }
+  .addon-table thead th { padding: 13px 20px; text-align: left; font-size: 10px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); font-family: var(--font); }
+  .addon-table thead th:last-child { text-align: right; }
+  .addon-table tbody tr { border-bottom: 0.5px solid rgba(255,255,255,0.05); transition: background 0.15s; }
+  .addon-table tbody tr:hover { background: rgba(255,255,255,0.025); }
+  .addon-table tbody td { padding: 14px 20px; font-size: 13px; vertical-align: middle; line-height: 1.45; }
+  .addon-table tbody td:first-child { color: var(--white); font-weight: 500; }
+  .addon-table tbody td:nth-child(2) { color: #888; font-size: 12.5px; }
+  .addon-table tbody td:last-child { text-align: right; white-space: nowrap; }
+  .price-cell { color: var(--gold); font-weight: 600; font-size: 13.5px; display: block; margin-bottom: 6px; }
+  .wa-btn { display: inline-block; font-size: 10px; padding: 4px 12px; background: transparent; border: 1px solid rgba(232,160,32,0.3); color: var(--gold); text-decoration: none; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 600; transition: all 0.2s; font-family: var(--font); cursor: pointer; }
+  .wa-btn:hover { background: var(--gold); color: var(--dark); }
+  .addon-note { font-size: 11px; color: var(--muted2); font-style: italic; padding: 12px 20px; background: var(--dark3); }
+
+  .terms { max-width: 900px; margin: 0 auto; padding: 0 24px 100px; }
+  .terms-title { font-size: 32px; font-weight: 600; text-align: center; margin-bottom: 8px; letter-spacing: -0.02em; }
+  .terms-sub { text-align: center; color: var(--muted); font-size: 13.5px; margin-bottom: 48px; }
+  .terms-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: rgba(255,255,255,0.05); }
+  .term { background: var(--dark2); padding: 20px 24px; }
+  .term-key { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 6px; font-weight: 600; }
+  .term-val { font-size: 13px; color: #bbb; line-height: 1.5; }
+
+  footer { text-align: center; padding: 60px 24px; border-top: 0.5px solid rgba(255,255,255,0.06); }
+  footer .logo { font-size: 28px; font-weight: 700; color: var(--gold); margin-bottom: 16px; letter-spacing: -0.02em; }
+  footer p { font-size: 13px; color: var(--muted); margin-bottom: 8px; }
+  footer a { color: var(--cream); text-decoration: none; transition: color 0.2s; }
+  footer a:hover { color: var(--gold); }
+  footer .tagline { font-size: 10.5px; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(255,255,255,0.18); margin-top: 32px; }
+
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes scrollPulse { 0%, 100% { opacity: 0.35; } 50% { opacity: 1; } }
+
+  @media (max-width: 640px) {
+    .terms-grid { grid-template-columns: 1fr; }
+    .contact-strip { gap: 16px; flex-direction: column; align-items: center; }
+    .addon-tab { font-size: 10px; padding: 11px 6px; min-width: 80px; }
+    .addon-table thead th:nth-child(2), .addon-table tbody td:nth-child(2) { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<section class="hero">
+  <p class="hero-tag">Graphic Design · Video Edit · Motion Graphics · AI</p>
+  <h1>Design that<br><em>sells.</em></h1>
+  <p class="hero-sub">Rohitxaii — Kolkata, India</p>
+  <div class="contact-strip">
+    <div class="contact-item"><span class="dot"></span><a href="/cdn-cgi/l/email-protection#085a6760617c646760697a313a3a3a486f65696164266b6765"><span class="__cf_email__" data-cfemail="b4e6dbdcddc0d8dbdcd5c68d868686f4d3d9d5ddd89ad7dbd9">[email&#160;protected]</span></a></div>
+    <div class="contact-item"><span class="dot"></span><a href="tel:+918927931716">+91 89279 31716</a></div>
+    <div class="contact-item"><span class="dot"></span><a href="https://instagram.com/rohitxaii" target="_blank">@rohitxaii</a></div>
+  </div>
+  <div class="scroll-hint"><span>Scroll</span><div class="scroll-line"></div></div>
+</section>
+
+<div class="section-divider"><span>Choose your package</span></div>
+
+<section class="packages">
+  <div class="packages-grid">
+
+    <div class="pkg">
+      <span class="pkg-icon">✦</span>
+      <div class="pkg-name">Starter</div>
+      <div class="pkg-tagline">Perfect to get things going</div>
+      <div class="pkg-price">
+        <div class="price-row"><span class="price-start">From</span><span class="price-currency">₹</span><span class="price-amount">5,999</span><span class="price-old">₹8,000</span></div>
+        <span class="price-suffix">Starting price · based on scope</span>
+      </div>
+      <p class="pkg-disclaimer">All rates are starting prices and may vary based on project scope. Final quote provided after brief discussion.</p>
+      <p class="pkg-includes">What's included</p>
+      <ul class="pkg-features">
+        <li>Logo Design (2 concepts, 2 revisions)</li>
+        <li>Business Card Design (both sides)</li>
+        <li>3 Social Media Post Designs</li>
+        <li>Final files: PNG, PDF, AI</li>
+        <li>5–7 day delivery</li>
+      </ul>
+      <a href="https://wa.me/918927931716?text=Hi%20Rohit!%20I'm%20interested%20in%20the%20Starter%20package." class="pkg-cta">Get Started →</a>
+    </div>
+
+    <div class="pkg featured">
+      <div class="popular-badge">Most Popular</div>
+      <span class="pkg-icon">◈</span>
+      <div class="pkg-name">Brand Kit</div>
+      <div class="pkg-tagline">Everything your brand needs</div>
+      <div class="pkg-price">
+        <div class="price-row"><span class="price-start">From</span><span class="price-currency">₹</span><span class="price-amount">22,999</span><span class="price-old">₹28,000</span></div>
+        <span class="price-suffix">Starting price · based on scope</span>
+      </div>
+      <p class="pkg-disclaimer">All rates are starting prices and may vary based on project scope. Final quote provided after brief discussion.</p>
+      <p class="pkg-includes">What's included</p>
+      <ul class="pkg-features">
+        <li>Full Brand Identity (logo + colors + fonts)</li>
+        <li>10 Social Media Post Designs</li>
+        <li>Business Card + Letterhead</li>
+        <li>Animated Logo (5–10 sec)</li>
+        <li>Unlimited minor edits for 30 days</li>
+        <li>7–10 day delivery</li>
+      </ul>
+      <a href="https://wa.me/918927931716?text=Hi%20Rohit!%20I'm%20interested%20in%20the%20Brand%20Kit%20package." class="pkg-cta">Get This Package →</a>
+    </div>
+
+    <div class="pkg">
+      <span class="pkg-icon">◉</span>
+      <div class="pkg-name">Social Pro</div>
+      <div class="pkg-tagline">Dominate your feed every month</div>
+      <div class="pkg-price">
+        <div class="price-row"><span class="price-start">From</span><span class="price-currency">₹</span><span class="price-amount">11,999</span><span class="price-old">₹14,000</span></div>
+        <span class="price-suffix">Per month · retainer plan</span>
+      </div>
+      <p class="pkg-disclaimer">All rates are starting prices and may vary based on project scope. Final quote provided after brief discussion.</p>
+      <p class="pkg-includes">What's included</p>
+      <ul class="pkg-features">
+        <li>10 Static Posts per month</li>
+        <li>4 Reels Edits (up to 60 sec each)</li>
+        <li>Content calendar planning</li>
+        <li>Consistent branded templates</li>
+        <li>48-hour turnaround per post</li>
+        <li>Unlimited minor edits</li>
+      </ul>
+      <a href="https://wa.me/918927931716?text=Hi%20Rohit!%20I'm%20interested%20in%20the%20Social%20Pro%20monthly%20plan." class="pkg-cta">Start Monthly Plan →</a>
+    </div>
+
+    <div class="pkg">
+      <span class="pkg-icon">▶</span>
+      <div class="pkg-name">Video & Motion</div>
+      <div class="pkg-tagline">Move your audience, literally</div>
+      <div class="pkg-price">
+        <div class="price-row"><span class="price-start">From</span><span class="price-currency">₹</span><span class="price-amount">14,999</span><span class="price-old">₹18,000</span></div>
+        <span class="price-suffix">Starting price · based on scope</span>
+      </div>
+      <p class="pkg-disclaimer">All rates are starting prices and may vary based on project scope. Final quote provided after brief discussion.</p>
+      <p class="pkg-includes">What's included</p>
+      <ul class="pkg-features">
+        <li>Product Promo Video (60–90 sec)</li>
+        <li>Colour grading + brand elements</li>
+        <li>Animated logo sting (5–10 sec)</li>
+        <li>Delivered in MP4 + MOV</li>
+        <li>2 revisions included</li>
+        <li>5–7 day delivery</li>
+      </ul>
+      <a href="https://wa.me/918927931716?text=Hi%20Rohit!%20I'm%20interested%20in%20the%20Video%20and%20Motion%20package." class="pkg-cta">Get Started →</a>
+    </div>
+
+  </div>
+</section>
+
+<div class="section-divider"><span>All services</span></div>
+<section class="addons">
+  <h2 class="addons-title">Explore every service</h2>
+  <p class="addons-sub">Select a category — click Order to start a WhatsApp chat instantly</p>
+
+  <div class="addon-tabs">
+    <button class="addon-tab active" onclick="switchTab('graphic',this)">Graphic Design</button>
+    <button class="addon-tab" onclick="switchTab('video',this)">Video Editing</button>
+    <button class="addon-tab" onclick="switchTab('motion',this)">Motion Graphics</button>
+    <button class="addon-tab" onclick="switchTab('ai',this)">AI Generative</button>
+  </div>
+
+  <div class="addon-panel active" id="panel-graphic">
+    <table class="addon-table">
+      <thead><tr><th>Service</th><th>Scope / Deliverable</th><th>Rate (INR)</th></tr></thead>
+      <tbody>
+        <tr><td>Logo Design</td><td>3 concepts, 2 revisions, final files (AI, PNG, PDF)</td><td><span class="price-cell">₹3,500 – ₹7,000</span><a href="https://wa.me/918927931716?text=Hi%20Rohit!%20I%20want%20to%20order%20Logo%20Design." class="wa-btn">Order →</a></td></tr>
+        <tr><td>Brand Identity Package</td><td>Logo + color palette + typography + brand guide</td><td><span class="price-cell">₹10,000 – ₹20,000</span><a href="https://wa.me/918927931716?text=Hi%20Rohit!%20I%20want%20to%20order%20Brand%20Identity." class="wa-btn">Order →</a></td></tr>
+        <tr><td>Social Media Post Design</td><td>Single static post (Instagram / Facebook)</td><td><span class="price-cell">₹600 – ₹800</span><a href="https://wa.me/918927931716?text=Hi%20Rohit!%20I%20want%20to%20order%20Social%20Media%20Post%20Design." class="wa-btn">Order →</a></td></tr>
+        <tr><td>Social Media Pack</td><td>10 posts, consistent design theme</td><td><span class="price-cell">₹5,500 – ₹7,000</span><a href="https://wa.me/918927931716?text=Hi%20Rohit!%20I%20want%20to%20order%20Social%20Media%20Pack." class="wa-btn">Order →</a></td></tr>
+        <tr><td>Poster / Flyer Design</td><td>A4 / A3, print-ready + digital version</td><td><span class="price-cell">₹1,200 – ₹3,000</span><a href="https://wa.me/918927931716?text=Hi%20Rohit!%20I%20want%20to%20order%20Poster%20or%20Flyer%20Design." class="wa-btn">Order →</a></td></tr>
+        <tr><td>Brochure / Catalogue</td><td>Bi-fold or tri-fold, per design</td><td><span class="price-cell">₹2,500 – ₹5,500</span><a href="https://wa.me/918927931716?text=Hi%20Rohit!%20I%20want%20to%20order%20Brochure%20Design." class="wa-btn">Order →</a></td></tr>
+        <tr><td>Presentation Design</td><td>Up to 15 slides (custom template)</td><td><span class="price-cell">₹3,500 – ₹7,000</span><a href="https://wa.me/918927931716?text=Hi%20Rohit!%20I%20want%20to%20order%20Presentation%20Design." class="wa-btn">Order →</a></td></tr>
+        <tr><td>Banner / Hoarding Design</td><td>Single banner, any size</td><td><span class="price-cell">₹1,200 – ₹2,500</span><a href="https://wa.me/918927931716?text=Hi%20Rohit!%20I%20want%20to%20order%20Banner%20Design." class="wa-btn">Order →</a></td></tr>
+        <tr><td>Business Card Design</td><td>Both sides, print-ready</td><td><span class="price-cell">₹700 – ₹1,200</span><a href="https://wa.me/918927931716?text=Hi%20Rohit!%20I%20want%20to%20order%20Business%20Card%20Design." class="wa-btn">Order →</a></td></tr>
+        <tr><td>Packaging Design</td><td>Full Label Set (front + back + sides)</td><td><span class="price-cell">₹5,000 – ₹10,000</span><a href="https://wa.me/918927931716?text=Hi%20Rohit!%20I%20want%20to%20order%20Packaging%20Design." class="wa-btn">Order →</a></td></tr>
+      </tbody>
+    </table>
+    <p class="addon-note">Prices vary based on complexity, number of pages, and assets provided by client.</p>
+  </div>
+
+  <div class="addon-panel" id="panel-video">
+    <table class="addon-table">
+      <thead><tr><th>Service</th><th>Scope / Deliverable</th><th>Rate (INR)</th></tr></thead>
+      <tbody>
+        <tr><td>Short-form Video Edit</td><td>Reels / Shorts (up to 60 sec)</td><td><span class="price-cell">₹1,200 – ₹2,500</span><a href="https://wa.me/918927931716?text=Hi%20Rohit!%20I%20want%20to%20order%20Short-form%20Video%20Editing." class="wa-btn">Order →</a></td></tr>
+        <tr><td>Long-form Video Edit</td><td>YouTube / Corporate (up to 10 min)</td><td><span class="price-cell">₹3,500 – ₹7,000</span><a href="https://wa.me/918927931716?text=Hi%20Rohit!%20I%20want%20to%20order%20Long-form%20Video%20Editing." class="wa-btn">Order →</a></td></tr>
+        <tr><td>Wedding / Event Highlight</td><td>3–5 min highlight reel</td><td><span class="price-cell">₹5,000 – ₹10,000</span><a href="https://wa.me/918927931716?text=Hi%20Rohit!%20I%20want%20to%20order%20Wedding%20Highlight%20Video." class="wa-btn">Order →</a></td></tr>
+        <tr><td>Product Promo Video</td><td>60–90 sec, colour graded + branded</td><td><span class="price-cell">₹4,500 – ₹9,000</span><a href="https://wa.me/918927931716?text=Hi%20Rohit!%20I%20want%20to%20order%20Product%20Promo%20Video." class="wa-btn">Order →</a></td></tr>
+        <tr><td>AI-Generated Short Film</td><td>Up to 60 sec</td><td><span class="price-cell">₹6,000 – ₹9,000</span><a href="https://wa.me/918927931716?text=Hi%20Rohit!%20I%20want%20to%20order%20AI%20Short%20Film." class="wa-btn">Order →</a></td></tr>
+        <tr><td>Colour Grading</td><td>Per video (up to 10 min)</td><td><span class="price-cell">₹1,800 – ₹4,500</span><a href="https://wa.me/918927931716?text=Hi%20Rohit!%20I%20want%20to%20order%20Colour%20Grading." class="wa-btn">Order →</a></td></tr>
+        <tr><td>AI-Generated UGC Ads</td><td>Up to 2 min</td><td><span class="price-cell">₹9,000 – ₹13,000</span><a href="https://wa.me/918927931716?text=Hi%20Rohit!%20I%20want%20to%20order%20AI%20UGC%20Ads." class="wa-btn">Order →</a></td></tr>
+      </tbody>
+    </table>
+    <p class="addon-note">Raw footage must be provided by client. Cloud upload (Google Drive / WeTransfer) accepted.</p>
+  </div>
+
+  <div class="addon-panel" id="panel-motion">
+    <table class="addon-table">
+      <thead><tr><th>Service</th><th>Scope / Deliverable</th><th>Rate (INR)</th></tr></thead>
+      <tbody>
+        <tr><td>Animated Logo / Logo Sting</td><td>5–10 sec animation, 2 variations</td><td><span class="price-cell">₹3,000 – ₹6,000</span><a href="https://wa.me/918927931716?text=Hi%20Rohit!%20I%20want%20to%20order%20Animated%20Logo." class="wa-btn">Order →</a></td></tr>
+        <tr><td>Intro / Outro Animation</td><td>YouTube / social media, up to 15 sec</td><td><span class="price-cell">₹2,000 – ₹4,500</span><a href="https://wa.me/918927931716?text=Hi%20Rohit!%20I%20want%20to%20order%20Intro%20Outro%20Animation." class="wa-btn">Order →</a></td></tr>
+        <tr><td>Lower Thirds Pack</td><td>5 animated lower thirds (editable)</td><td><span class="price-cell">₹2,500 – ₹5,500</span><a href="https://wa.me/918927931716?text=Hi%20Rohit!%20I%20want%20to%20order%20Lower%20Thirds%20Pack." class="wa-btn">Order →</a></td></tr>
+        <tr><td>Kinetic Typography Video</td><td>Up to 60 sec</td><td><span class="price-cell">₹4,500 – ₹9,000</span><a href="https://wa.me/918927931716?text=Hi%20Rohit!%20I%20want%20to%20order%20Kinetic%20Typography%20Video." class="wa-btn">Order →</a></td></tr>
+        <tr><td>Social Media Animated Post</td><td>Single animated story / post</td><td><span class="price-cell">₹1,200 – ₹2,500</span><a href="https://wa.me/918927931716?text=Hi%20Rohit!%20I%20want%20to%20order%20Animated%20Social%20Post." class="wa-btn">Order →</a></td></tr>
+      </tbody>
+    </table>
+    <p class="addon-note">Final delivery in MP4 (H.264) and MOV. After Effects project file available at extra cost.</p>
+  </div>
+
+  <div class="addon-panel" id="panel-ai">
+    <table class="addon-table">
+      <thead><tr><th>Service</th><th>What You Get</th><th>Price (INR)</th></tr></thead>
+      <tbody>
+        <tr><td>AI Avatar Creation</td><td>Custom AI avatar (realistic / stylized)</td><td><span class="price-cell">₹999 – ₹1,999</span><a href="https://wa.me/918927931716?text=Hi%20Rohit!%20I%20want%20to%20order%20AI%20Avatar%20Creation." class="wa-btn">Order →</a></td></tr>
+        <tr><td>AI Voice Training / Cloning</td><td>Trained voice model + 2–3 samples</td><td><span class="price-cell">₹1,499 – ₹2,999</span><a href="https://wa.me/918927931716?text=Hi%20Rohit!%20I%20want%20to%20order%20AI%20Voice%20Cloning." class="wa-btn">Order →</a></td></tr>
+        <tr><td>AI Song Creation</td><td>Full AI-generated song (lyrics + voice + music)</td><td><span class="price-cell">₹1,999 – ₹4,999</span><a href="https://wa.me/918927931716?text=Hi%20Rohit!%20I%20want%20to%20order%20AI%20Song%20Creation." class="wa-btn">Order →</a></td></tr>
+        <tr><td>AI Social Media Post</td><td>1 AI creative post (image-based)</td><td><span class="price-cell">₹599 – ₹799</span><a href="https://wa.me/918927931716?text=Hi%20Rohit!%20I%20want%20to%20order%20AI%20Social%20Media%20Post." class="wa-btn">Order →</a></td></tr>
+        <tr><td>AI Product Showcase</td><td>15–30 sec AI video / static</td><td><span class="price-cell">₹1,499 – ₹5,499</span><a href="https://wa.me/918927931716?text=Hi%20Rohit!%20I%20want%20to%20order%20AI%20Product%20Showcase." class="wa-btn">Order →</a></td></tr>
+        <tr><td>AI 2D Animation Film</td><td>Per minute</td><td><span class="price-cell">₹3,999 – ₹4,999</span><a href="https://wa.me/918927931716?text=Hi%20Rohit!%20I%20want%20to%20order%20AI%202D%20Animation%20Film." class="wa-btn">Order →</a></td></tr>
+      </tbody>
+    </table>
+    <p class="addon-note">All AI services use the latest generative tools. Output quality depends on brief clarity and reference material provided.</p>
+  </div>
+</section>
+
+<div class="section-divider"><span>How it works</span></div>
+<section class="terms">
+  <h2 class="terms-title">Simple & transparent</h2>
+  <p class="terms-sub">No hidden fees. No surprises.</p>
+  <div class="terms-grid">
+    <div class="term"><div class="term-key">Payment</div><div class="term-val">50% advance to begin · balance on delivery</div></div>
+    <div class="term"><div class="term-key">Revisions</div><div class="term-val">2 free revisions · additional at ₹500/round</div></div>
+    <div class="term"><div class="term-key">Turnaround</div><div class="term-val">3–5 days design · 5–7 days video & motion</div></div>
+    <div class="term"><div class="term-key">Source Files</div><div class="term-val">Available separately · not in base price</div></div>
+    <div class="term"><div class="term-key">Payment Methods</div><div class="term-val">UPI · Bank Transfer · Razorpay</div></div>
+    <div class="term"><div class="term-key">GST</div><div class="term-val">18% GST for registered businesses · GSTIN on request</div></div>
+  </div>
+</section>
+
+<footer>
+  <div class="logo">Rohitxaii</div>
+  <p><a href="/cdn-cgi/l/email-protection#86d4e9eeeff2eae9eee7f4bfb4b4b4c6e1ebe7efeaa8e5e9eb"><span class="__cf_email__" data-cfemail="1c4e737475687073747d6e252e2e2e5c7b717d7570327f7371">[email&#160;protected]</span></a></p>
+  <p><a href="tel:+918927931716">+91 89279 31716</a></p>
+  <p><a href="https://instagram.com/rohitxaii" target="_blank">@rohitxaii</a> on Instagram</p>
+  <p class="tagline">Kolkata, India · Available for projects worldwide</p>
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scrip
